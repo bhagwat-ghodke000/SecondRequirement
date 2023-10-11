@@ -13,6 +13,7 @@ import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,6 +30,8 @@ public class userImpl implements userI {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public static final String ACCOUNT_SID ="AC3d88b6c1f5e3eb6feefd9b354a4c7000";
 
@@ -44,6 +47,7 @@ public class userImpl implements userI {
         System.out.println("Date of Birth is :"+forObject.getDateOfBirth());
         if(forObject.getAadhaarCardNo().equals(userDto.getAadharCardNumber())) {
             User map = this.modelMapper.map(userDto, User.class);
+            map.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
             User save = this.userRepo.save(map);
             UserDto map1 = this.modelMapper.map(save, UserDto.class);
 
@@ -85,7 +89,7 @@ public class userImpl implements userI {
         user.setCity(userDto.getCity());
         user.setUserType(userDto.getUserType());
         user.setDistrict(userDto.getDistrict());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
         user.setAadharCardNumber(userDto.getAadharCardNumber());
         user.setPanCardNumber(userDto.getPanCardNumber());
         user.setPinCode(userDto.getPinCode());
