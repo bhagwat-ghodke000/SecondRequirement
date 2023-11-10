@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/userInformation")
+@RequestMapping("/userInformationData")
 public class UserInformationController {
 
     @Autowired

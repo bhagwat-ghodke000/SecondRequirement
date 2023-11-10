@@ -1,7 +1,10 @@
 package com.Requriment.UserService.controller;
 
+import com.Requriment.UserService.configuration.UserIntilizer;
 import com.Requriment.UserService.dto.UserDto;
 import com.Requriment.UserService.service.serviceImpl.userImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,18 +19,23 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private userImpl userimpl;
 
     @RequestMapping(value = "/",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDto){
+        logger.info("In the Controller");
         UserDto userDto1 = this.userimpl.registerUser(userDto);
+        logger.info("After Complete Service");
         return new ResponseEntity<>(userDto1, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
     ResponseEntity<UserDto> getSingleUser(@PathVariable long userId){
+        logger.info("In the Controller");
         UserDto user = this.userimpl.getUser(userId);
+        logger.info("after the Controller"+ user.toString());
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
     @GetMapping
